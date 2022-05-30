@@ -46,7 +46,7 @@ const CurrencyTable: FunctionComponent<ITableViewProps> = ({
 
   return (
     currencyData && (
-      <Container className="mt-2">
+      <Container className="p-1">
         <Table hover bordered {...getTableProps()}>
           <thead>
             {

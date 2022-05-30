@@ -12,7 +12,8 @@ const API_URL = 'https://api.nbp.pl/api/exchangerates/tables/A/?format=json'
 const App = () => {
   const [currencyData, setCurrencyData] = useState<ICurrencyData[]>([])
   const [isLoading, setIsLoading] = useState(false)
-  const { theme, filterValue, pageNumber, pageSize } = useUserContext()
+  const { theme, filterValue, pageNumber, pageSize, changeState } =
+    useUserContext()
 
   useEffect(() => {
     const fetchData = async () => {
@@ -34,11 +35,11 @@ const App = () => {
   const dataLength = currencyData.length
 
   return isLoading ? (
-    <Container className="text-center">
-      <Spinner className="w-8 h-8 mr-2" animation="border" variant="dark" />
+    <Container className="d-flex justify-content-center">
+      <Spinner animation="border" variant="dark" />
     </Container>
   ) : (
-    <Container className={`${theme} mt-2`}>
+    <Container className={`${theme} mt-1`}>
       <Filter filterValue={filterValue} />
       <CurrencyTable currencyData={currencyData} />
       <PaginationComponent

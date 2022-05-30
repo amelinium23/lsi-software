@@ -23,7 +23,7 @@ const Filter: FunctionComponent<IFilterProps> = ({ onFilter, filterValue }) => {
   }
 
   return (
-    <Container className="mt-10">
+    <Container className="mt-2">
       <Row>
         <Col md={10}>
           <InputGroup>
