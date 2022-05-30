@@ -34,7 +34,9 @@ const App = () => {
   const dataLength = currencyData.length
 
   return isLoading ? (
-    <Spinner animation="border" variant="dark" />
+    <Container className="text-center">
+      <Spinner className="w-8 h-8 mr-2" animation="border" variant="dark" />
+    </Container>
   ) : (
     <Container className={`${theme} mt-2`}>
       <Filter filterValue={filterValue} />
