@@ -1,6 +1,9 @@
 import { ICurrencyData } from '../types/ICurrencyData'
-import { FunctionComponent } from 'react'
+import { FunctionComponent, useMemo } from 'react'
 import { Container, Table } from 'react-bootstrap'
+import { ArrowDown, ArrowUp, Funnel } from 'react-bootstrap-icons'
+// @ts-ignore
+import { useTable, useSortBy } from 'react-table'
 
 interface ITableViewProps {
   currencyData?: ICurrencyData[]
@@ -13,25 +16,81 @@ const CurrencyTable: FunctionComponent<ITableViewProps> = ({
     return <h1>Not found!</h1>
   }
 
+  const data = useMemo(() => currencyData, [])
+  const columns = useMemo(
+    () => [
+      {
+        Header: 'Symbol Waluty',
+        accessor: 'code',
+      },
+      {
+        Header: 'Waluta',
+        accessor: 'currency',
+      },
+      {
+        Header: 'Waluta',
+        accessor: 'mid',
+      },
+    ],
+    [],
+  )
+
+  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
+    useTable(
+      {
+        columns,
+        data,
+      },
+      useSortBy,
+    )
+
   return (
     currencyData && (
-      <Container>
-        <Table hover bordered>
+      <Container className="mt-2">
+        <Table hover bordered {...getTableProps()}>
           <thead>
-            <tr>
-              <th>Symbol waluty</th>
-              <th>Waluta</th>
-              <th>Kurs wality</th>
-            </tr>
+            {
+              // @ts-ignore
+              headerGroups.map((headerGroup) => (
+                <tr {...headerGroup.getHeaderGroupProps()}>
+                  {/* @ts-ignore */}
+                  {headerGroup.headers.map((column) => (
+                    <th
+                      {...column.getHeaderProps(column.getSortByToggleProps())}
+                    >
+                      {column.render('Header')}
+                      <span style={{ float: 'right' }}>
+                        {column.isSorted ? (
+                          column.isSortedDesc ? (
+                            <ArrowUp />
+                          ) : (
+                            <ArrowDown />
+                          )
+                        ) : (
+                          <Funnel />
+                        )}
+                      </span>
+                    </th>
+                  ))}
+                </tr>
+              ))
+            }
           </thead>
-          <tbody>
-            {currencyData.map((currency) => (
-              <tr key={currency.code}>
-                <td>{currency.code}</td>
-                <td>{currency.currency}</td>
-                <td>{currency.mid}</td>
-              </tr>
-            ))}
+          <tbody {...getTableBodyProps()}>
+            {/* @ts-ignore */}
+            {rows.map((row) => {
+              prepareRow(row)
+              return (
+                <tr {...row.getRowProps()}>
+                  {/* @ts-ignore */}
+                  {row.cells.map((cell) => {
+                    return (
+                      <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                    )
+                  })}
+                </tr>
+              )
+            })}
           </tbody>
         </Table>
       </Container>

@@ -13,7 +13,7 @@ const PaginationComponent: FunctionComponent<IPaginationProps> = ({
   totalItems,
 }) => {
   return (
-    <Container>
+    <Container className="mt-4">
       <Pagination></Pagination>
     </Container>
   )

@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { useEffect, useState } from 'react'
-import { Container } from 'react-bootstrap'
+import { Container, Spinner } from 'react-bootstrap'
 import { useUserContext } from '../context/userContext'
 import { ICurrencyData } from '../types/ICurrencyData'
 import CurrencyTable from './CurrencyTable'
@@ -11,14 +11,22 @@ const API_URL = 'https://api.nbp.pl/api/exchangerates/tables/A/?format=json'
 
 const App = () => {
   const [currencyData, setCurrencyData] = useState<ICurrencyData[]>([])
+  const [isLoading, setIsLoading] = useState(false)
   const { theme, filterValue, pageNumber, pageSize } = useUserContext()
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await axios.get(API_URL)
-      const data = await response.data
-      const currencies = data[0].rates
-      setCurrencyData(currencies)
+      try {
+        setIsLoading(true)
+        const response = await axios.get(API_URL)
+        const data = await response.data
+        const currencies = data[0].rates
+        setCurrencyData(currencies)
+      } catch (error) {
+        console.log(error)
+      } finally {
+        setIsLoading(false)
+      }
     }
     fetchData()
   }, [])
@@ -27,6 +35,7 @@ const App = () => {
 
   return (
     <Container className={`${theme}-mt-10`}>
+      {isLoading ? <Spinner animation="border" variant="dark" /> : null}
       <Filter />
       <CurrencyTable currencyData={currencyData} />
       <PaginationComponent
