@@ -1,12 +1,5 @@
 import axios from 'axios'
-import {
-  Col,
-  Container,
-  InputGroup,
-  Row,
-  Button,
-  FormControl,
-} from 'react-bootstrap'
+import { Col, InputGroup, Row, Button, FormControl } from 'react-bootstrap'
 import { ChangeEvent, FunctionComponent, Dispatch, SetStateAction } from 'react'
 import { ACTION_TYPES } from '../state/Reducer'
 import { Action } from '../state/types/State'
@@ -48,25 +41,23 @@ const Filter: FunctionComponent<IFilterProps> = ({
   }
 
   return (
-    <Container className="mt-2">
-      <Row>
-        <Col md={10}>
-          <InputGroup>
-            <Button variant="outline-primary" onClick={onClick}>
-              Clear filter
-            </Button>
-          </InputGroup>
-        </Col>
-        <Col md={2}>
-          <FormControl
-            placeholder="Place date that you want currencies from"
-            type="date"
-            value={filterValue}
-            onChange={onChange}
-          />
-        </Col>
-      </Row>
-    </Container>
+    <Row className="rowStyle">
+      <Col md={10}>
+        <InputGroup>
+          <Button variant="outline-primary" onClick={onClick}>
+            Clear filter
+          </Button>
+        </InputGroup>
+      </Col>
+      <Col md={2}>
+        <FormControl
+          placeholder="Place date that you want currencies from"
+          type="date"
+          value={filterValue}
+          onChange={onChange}
+        />
+      </Col>
+    </Row>
   )
 }
 

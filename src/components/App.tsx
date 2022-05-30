@@ -8,6 +8,7 @@ import CurrencyTable from './CurrencyTable'
 import ErrorModal from './ErrorModal'
 import Filter from './Filter'
 import PaginationComponent from './PaginationComponent'
+import ThemeChanger from './ThemeChanger'
 
 const App = () => {
   const [isLoading, setIsLoading] = useState(false)
@@ -34,6 +35,7 @@ const App = () => {
         setIsLoading(false)
       }
     }
+    document.getElementById('root')?.className.replace('', theme)
     fetchData()
   }, [])
 
@@ -43,13 +45,14 @@ const App = () => {
   const realData = currencyData?.slice(startIndex, endIndex)
 
   return (
-    <Container>
+    <Container className={`${theme}`}>
+      <h3 className="headerStyle">NBP Currency Viewer</h3>
       {isLoading ? (
-        <Container className="d-flex justify-content-center">
-          <Spinner animation="border" variant="dark" />
+        <Container className={`${theme} d-flex justify-content-center`}>
+          <Spinner animation="border" variant={`${theme}`} />
         </Container>
       ) : (
-        <Container className={`${theme}`}>
+        <>
           <Filter
             filterValue={filterValue}
             dispatch={dispatch}
@@ -62,8 +65,9 @@ const App = () => {
             pageSize={pageSize}
             totalItems={dataLength}
           />
-        </Container>
+        </>
       )}
+      <ThemeChanger theme={theme} dispatch={dispatch} />
       <ErrorModal dispatch={dispatch} errorMessage={errorMessage} />
     </Container>
   )
