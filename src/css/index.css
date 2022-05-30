@@ -1,5 +1,5 @@
 .dark * {
-  background-color: black;
+  background-color: rgb(50, 50, 50);
   color: white;
 }
 
@@ -28,4 +28,20 @@
 
 .tableStyle {
   margin-top: 0.2rem;
+}
+
+body .dark {
+  background-color: rgb(50, 50, 50);
+  color: white;
+}
+
+.table-hover:hover > tr {
+  color: whitesmoke;
+}
+
+.light,
+body > *,
+body {
+  background-color: white;
+  color: black;
 }

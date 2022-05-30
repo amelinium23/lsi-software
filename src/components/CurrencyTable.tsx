@@ -53,7 +53,7 @@ const CurrencyTable: FunctionComponent<ITableViewProps> = ({
 
   return (
     currencyData && (
-      <Table className="tableStyle" hover bordered {...getTableProps()}>
+      <Table className="tableStyle" bordered {...getTableProps()}>
         <thead>
           {
             // @ts-ignore
