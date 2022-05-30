@@ -3,6 +3,7 @@ import { CurrencyData } from '../../types/CurrencyData'
 export type State = {
   theme: string
   filterValue: string
+  errorMessage: string
   pageNumber: number
   pageSize: number
   activePage: number

@@ -1,5 +1,6 @@
-import { Dispatch, FunctionComponent } from 'react'
-import { Col, Container, Pagination, Row } from 'react-bootstrap'
+import { ChangeEvent, Dispatch, FunctionComponent } from 'react'
+import { Col, Container, Form, Pagination, Row } from 'react-bootstrap'
+import { pageSizes } from '../constants/pageSizes'
 import { ACTION_TYPES } from '../state/Reducer'
 import { Action } from '../state/types/State'
 
@@ -16,8 +17,9 @@ const PaginationComponent: FunctionComponent<IPaginationProps> = ({
   totalItems,
   dispatch,
 }) => {
+  const lastPage = Math.ceil(totalItems / pageSize)
   const onPreviousButtonClick = () => {
-    dispatch({ type: ACTION_TYPES.SET_PAGE_NUMBER, payload: pageNumber-- })
+    dispatch({ type: ACTION_TYPES.SET_PAGE_NUMBER, payload: pageNumber - 1 })
   }
 
   const onPageClick = (pageNum: number) => {
@@ -25,10 +27,23 @@ const PaginationComponent: FunctionComponent<IPaginationProps> = ({
   }
 
   const onNextButtonClick = () => {
-    dispatch({ type: ACTION_TYPES.SET_PAGE_NUMBER, payload: pageNumber++ })
+    dispatch({ type: ACTION_TYPES.SET_PAGE_NUMBER, payload: pageNumber + 1 })
   }
 
-  const lastPage = Math.ceil(totalItems / pageSize)
+  const onPageSizeChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    dispatch({
+      type: ACTION_TYPES.SET_PAGE_SIZE,
+      payload: parseInt(e.target.value),
+    })
+  }
+
+  const onFirstPageClick = () => {
+    dispatch({ type: ACTION_TYPES.SET_PAGE_NUMBER, payload: 1 })
+  }
+
+  const onLastPageClick = () => {
+    dispatch({ type: ACTION_TYPES.SET_PAGE_NUMBER, payload: lastPage })
+  }
 
   const pageRange = (from: number, to: number): number[] => {
     if (to < from) return []
@@ -43,27 +58,44 @@ const PaginationComponent: FunctionComponent<IPaginationProps> = ({
   return (
     <Container className="mt-1 mb-1">
       <Row>
-        <Col className="text-right" md={10}>
+        <Col className="text-right" md={7}>
           <p>{`Showing ${pageNumber} to ${pageSize} of ${totalItems}`}</p>
         </Col>
-        <Col md={2} style={{ alignItems: 'flex-end' }}>
+        <Col md={3}>
           <Pagination>
-            {pageNumber === 1 ? null : (
-              <Pagination.Prev onClick={onPreviousButtonClick} />
-            )}
+            <Pagination.Prev
+              disabled={pageNumber === 1}
+              onClick={onPreviousButtonClick}
+            />
+            <Pagination.First
+              disabled={pageNumber === 1}
+              onClick={onFirstPageClick}
+            />
             {pageRange(1, lastPage).map((pageNum) => (
               <Pagination.Item
-                key={`${pageNum}-${activePage}`}
+                key={`${pageNum}-${pageNumber}`}
                 onClick={() => onPageClick(pageNum)}
                 active={pageNum === pageNumber}
               >
                 {pageNum}
               </Pagination.Item>
             ))}
-            {pageNumber === lastPage ? null : (
-              <Pagination.Next onClick={onNextButtonClick} />
-            )}
+            <Pagination.Last
+              disabled={pageNumber === lastPage}
+              onClick={onLastPageClick}
+            />
+            <Pagination.Next
+              disabled={pageNumber === lastPage}
+              onClick={onNextButtonClick}
+            />
           </Pagination>
+        </Col>
+        <Col md={2}>
+          <Form.Select onChange={onPageSizeChange} value={pageSize}>
+            {pageSizes.map((size) => (
+              <option key={size}>{size}</option>
+            ))}
+          </Form.Select>
         </Col>
       </Row>
     </Container>
