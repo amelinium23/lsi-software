@@ -33,10 +33,11 @@ const App = () => {
 
   const dataLength = currencyData.length
 
-  return (
-    <Container className={`${theme}-mt-10`}>
-      {isLoading ? <Spinner animation="border" variant="dark" /> : null}
-      <Filter />
+  return isLoading ? (
+    <Spinner animation="border" variant="dark" />
+  ) : (
+    <Container className={`${theme} mt-2`}>
+      <Filter filterValue={filterValue} />
       <CurrencyTable currencyData={currencyData} />
       <PaginationComponent
         pageNumber={pageNumber}
