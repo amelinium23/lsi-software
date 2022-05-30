@@ -1,4 +1,4 @@
-.dark * {
+.dark > * {
   background-color: rgb(50, 50, 50);
   color: white;
 }
@@ -30,13 +30,11 @@
   margin-top: 0.2rem;
 }
 
-body .dark {
+.dark,
+body .dark,
+body > * {
   background-color: rgb(50, 50, 50);
   color: white;
-}
-
-.table-hover:hover > tr {
-  color: whitesmoke;
 }
 
 .light,
