@@ -1,4 +1,4 @@
-import { ICurrencyData } from '../types/ICurrencyData'
+import { CurrencyData } from '../types/CurrencyData'
 import { FunctionComponent, useMemo } from 'react'
 import { Container, Table } from 'react-bootstrap'
 import { ArrowDown, ArrowUp, Funnel } from 'react-bootstrap-icons'
@@ -6,7 +6,7 @@ import { ArrowDown, ArrowUp, Funnel } from 'react-bootstrap-icons'
 import { useTable, useSortBy } from 'react-table'
 
 interface ITableViewProps {
-  currencyData?: ICurrencyData[]
+  currencyData?: CurrencyData[]
 }
 
 const CurrencyTable: FunctionComponent<ITableViewProps> = ({
@@ -16,7 +16,14 @@ const CurrencyTable: FunctionComponent<ITableViewProps> = ({
     return <h1>Not found!</h1>
   }
 
-  const data = useMemo(() => currencyData, [])
+  const data = useMemo(
+    () =>
+      currencyData.map((currency: CurrencyData) => ({
+        ...currency,
+        mid: currency.mid.toFixed(3),
+      })),
+    [currencyData],
+  )
   const columns = useMemo(
     () => [
       {

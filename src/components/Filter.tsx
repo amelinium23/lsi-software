@@ -6,19 +6,25 @@ import {
   Button,
   FormControl,
 } from 'react-bootstrap'
-import { useState, ChangeEvent, FunctionComponent } from 'react'
+import { useState, ChangeEvent, FunctionComponent, Dispatch } from 'react'
+import { ACTION_TYPES } from '../state/Reducer'
+import { Action } from '../state/types/State'
 
 interface IFilterProps {
-  onFilter?: (date: string) => void
+  onFilter: Dispatch<Action<string>>
   filterValue?: string
 }
 
 const Filter: FunctionComponent<IFilterProps> = ({ onFilter, filterValue }) => {
   const [date, setDate] = useState(filterValue || '')
+
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
+    onFilter({ type: ACTION_TYPES.SET_FILTER_VALUE, payload: e.target.value })
     setDate(e.target.value)
   }
+
   const onClick = () => {
+    onFilter({ type: ACTION_TYPES.SET_FILTER_VALUE, payload: '' })
     setDate('')
   }
 
